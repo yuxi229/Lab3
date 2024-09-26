@@ -36,10 +36,13 @@ public class JSONTranslationExample {
      * Returns the Spanish translation of Canada.
      * @return the Spanish translation of Canada
      */
+    // private static final int CanadaIndex = 30;
+
     public String getCanadaCountryNameSpanishTranslation() {
+        final int canadaindex = 30;
 
         // TODO Checkstyle: '30' is a magic number.
-        JSONObject canada = jsonArray.getJSONObject(30);
+        JSONObject canada = jsonArray.getJSONObject(canadaindex);
         return canada.getString("es");
     }
 
