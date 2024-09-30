@@ -14,11 +14,14 @@ import java.util.Map;
 public class LanguageCodeConverter {
 
     // TODO Task: pick appropriate instance variables to store the data necessary for this class
+    private static final Map<String, String> CODETOLANG = new HashMap<>();
+    private static final Map<String, String> langToCode = new HashMap<>();
 
     /**
      * Default constructor which will load the language codes from "language-codes.txt"
      * in the resources folder.
      */
+
     public LanguageCodeConverter() {
         this("language-codes.txt");
     }
@@ -36,13 +39,18 @@ public class LanguageCodeConverter {
 
             // TODO Task: use lines to populate the instance variable
             //           tip: you might find it convenient to create an iterator using lines.iterator()
+            for (String line : lines) {
+                String[] parts = line.split("\t+");
+
+                CODETOLANG.put(parts[parts.length - 1], parts[0]);
+                langToCode.put(parts[0], parts[parts.length - 1]);
+            }
 
             // TODO Checkstyle: '}' on next line should be alone on a line.
         }
         catch (IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
         }
-
     }
 
     /**
@@ -50,9 +58,9 @@ public class LanguageCodeConverter {
      * @param code the language code
      * @return the name of the language corresponding to the code
      */
-    public String fromLanguageCode(String code) {
+    public static String fromLanguageCode(String code) {
         // TODO Task: update this code to use your instance variable to return the correct value
-        return code;
+        return CODETOLANG.get(code);
     }
 
     /**
@@ -60,9 +68,9 @@ public class LanguageCodeConverter {
      * @param language the name of the language
      * @return the 2-letter code of the language
      */
-    public String fromLanguage(String language) {
+    public static String fromLanguage(String language) {
         // TODO Task: update this code to use your instance variable to return the correct value
-        return language;
+        return langToCode.get(language);
     }
 
     /**
@@ -71,6 +79,6 @@ public class LanguageCodeConverter {
      */
     public int getNumLanguages() {
         // TODO Task: update this code to use your instance variable to return the correct value
-        return 0;
+        return langToCode.size() - 1;
     }
 }

@@ -4,17 +4,17 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-
 
 /**
  * This class provides the service of converting country codes to their names.
  */
 public class CountryCodeConverter {
 
-    // TODO Task: pick appropriate instance variable(s) to store the data necessary for this class
+    private static final Map<String, String> CODETOCOUNTRY = new HashMap<>();
+    private static final Map<String, String> COUNTRYTOCODE = new HashMap<>();
 
     /**
      * Default constructor which will load the country codes from "country-codes.txt"
@@ -25,17 +25,24 @@ public class CountryCodeConverter {
     }
 
     /**
-     * Overloaded constructor which allows us to specify the filename to load the country code data from.
-     * @param filename the name of the file in the resources folder to load the data from
-     * @throws RuntimeException if the resource file can't be loaded properly
-     */
+         * Overloaded constructor which allows us to specify the filename to load the country code data from.
+         * @param filename the name of the file in the resources folder to load the data from
+         * @throws RuntimeException if the resource file can't be loaded properly
+         */
     public CountryCodeConverter(String filename) {
 
         try {
             List<String> lines = Files.readAllLines(Paths.get(getClass()
                     .getClassLoader().getResource(filename).toURI()));
 
-            // TODO Task: use lines to populate the instance variable(s)
+            for (String line : lines) {
+                String[] parts = line.split("\t+");
+
+                CODETOCOUNTRY.put(parts[2], parts[0]);
+                COUNTRYTOCODE.put(parts[0], parts[2]);
+            }
+            // System.out.println(codeToCountry);
+            // System.out.println(countryToCode);
 
         }
         catch (IOException | URISyntaxException ex) {
@@ -49,9 +56,8 @@ public class CountryCodeConverter {
      * @param code the 3-letter code of the country
      * @return the name of the country corresponding to the code
      */
-    public String fromCountryCode(String code) {
-        // TODO Task: update this code to use an instance variable to return the correct value
-        return code;
+    public static String fromCountryCode(String code) {
+        return CODETOCOUNTRY.get(code.toUpperCase());
     }
 
     /**
@@ -59,9 +65,8 @@ public class CountryCodeConverter {
      * @param country the name of the country
      * @return the 3-letter code of the country
      */
-    public String fromCountry(String country) {
-        // TODO Task: update this code to use an instance variable to return the correct value
-        return country;
+    public static String fromCountry(String country) {
+        return COUNTRYTOCODE.get(country);
     }
 
     /**
@@ -69,7 +74,6 @@ public class CountryCodeConverter {
      * @return how many countries are included in this code converter.
      */
     public int getNumCountries() {
-        // TODO Task: update this code to use an instance variable to return the correct value
-        return 0;
+        return CODETOCOUNTRY.size() - 1;
     }
 }
